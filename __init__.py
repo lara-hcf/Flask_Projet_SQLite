@@ -36,7 +36,7 @@ def authentification():
         elif (request.form['username']== 'user' and request.form['password']=='123'):
             session['authentifie']= True
             nom_client=session['nom_client']
-            return redirect(url_for('afficheClient', nom_client=nom_client))
+            return nom_client
         else:
             # Afficher un message d'erreur si les identifiants sont incorrects
             return render_template('formulaire_authentification.html', error=True)
