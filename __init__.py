@@ -56,12 +56,14 @@ def afficheClient(nom_client):
     cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom_client,))
     data= cursor.fetchall()
     conn.close()
-    
+    if est_authentifie():
         if request.form['username']== 'user' and request.form['password']== '123':
             session['authentifie']= True
             return render_template('read_data.html', data=data)
         else:
             return "<h1>Erreur d'identification</h1>"
+    else:
+        return render_template('formulaire_authentification.html', error=False)
 
 @app.route('/consultation/')
 def ReadBDD():
