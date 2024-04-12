@@ -60,7 +60,7 @@ def afficheClient(nom_client):
     data= cursor.fetchall()
     conn.close()
     if not est_authentifie():
-        return redirect(url_for('authentification')), nom_client
+        return redirect(url_for('authentification'), nom_client=nom_client)
     else : 
         return render_template('read_data.html', data=data)
 
