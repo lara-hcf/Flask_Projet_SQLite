@@ -35,7 +35,7 @@ def authentification():
             return redirect(url_for('lecture'))
         elif (request.form['username']== 'user' and request.form['password']=='123'):
             session['authentifie']= True
-            return redirect(url_for('lecture'))
+            return redirect(url_for('afficheClient', nom_client=nom_client))
         else:
             # Afficher un message d'erreur si les identifiants sont incorrects
             return render_template('formulaire_authentification.html', error=True)
@@ -60,7 +60,7 @@ def afficheClient(nom_client):
     data= cursor.fetchall()
     conn.close()
     if not est_authentifie():
-        return redirect(url_for('authentification'))
+        return redirect(url_for('authentification', nom_client=nom_client))
     else : 
         return render_template('read_data.html', data=data)
 
