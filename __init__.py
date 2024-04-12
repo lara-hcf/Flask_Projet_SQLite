@@ -61,6 +61,7 @@ def afficheClient(nom_client):
     cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom_client,))
     data= cursor.fetchall()
     conn.close()
+    global nom_fiche_client
     nom_fiche_client=str(nom_client)
     if not est_authentifie():
         return redirect(url_for('authentification'))
