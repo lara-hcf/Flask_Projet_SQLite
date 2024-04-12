@@ -49,22 +49,19 @@ def Readfiche(post_id):
     # Rendre le template HTML et transmettre les données
     return render_template('read_data.html', data=data)
 
-@app.route('/fiche_client/<string:nom_client>', methods=['POST'])
+@app.route('/fiche_client/<string:nom_client>')
 def afficheClient(nom_client):
-    
     conn= sqlite3.connect('database.db')
     cursor= conn.cursor()
     cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom_client,))
     data= cursor.fetchall()
     conn.close()
-    if request.method== 'POST':
+    
         if request.form['username']== 'user' and request.form['password']== '123':
             session['authentifie']= True
             return render_template('read_data.html', data=data)
         else:
             return "<h1>Erreur d'identification</h1>"
-    else:
-        return "<h1>Erreur 404</h2>"
 
 @app.route('/consultation/')
 def ReadBDD():
