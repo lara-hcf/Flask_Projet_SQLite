@@ -7,6 +7,7 @@ import sqlite3
 
 app = Flask(__name__)                                                                                                                  
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # Clé secrète pour les sessions
+nom_fiche_client=""
 
 # Fonction pour créer une clé "authentifie" dans la session utilisateur
 def est_authentifie():
@@ -35,8 +36,7 @@ def authentification():
             return redirect(url_for('lecture'))
         elif (request.form['username']== 'user' and request.form['password']=='123'):
             session['authentifie']= True
-            nom_client=session['nom_client']
-            return nom_client
+            return redirect(url_for('afficheClient', nom_client=nom_fiche_client))
         else:
             # Afficher un message d'erreur si les identifiants sont incorrects
             return render_template('formulaire_authentification.html', error=True)
@@ -60,7 +60,7 @@ def afficheClient(nom_client):
     cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom_client,))
     data= cursor.fetchall()
     conn.close()
-    session['nom-client']= nom_client
+    nom_fiche_client=nom_client
     if not est_authentifie():
         return redirect(url_for('authentification'))
     else : 
