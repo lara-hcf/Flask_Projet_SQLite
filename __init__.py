@@ -29,10 +29,13 @@ def lecture():
 def authentification():
     if request.method == 'POST':
         # Vérifier les identifiants
-        if request.form['username'] == 'admin' and request.form['password'] == 'password': # password à cacher par la suite
+        if (request.form['username'] == 'admin' and request.form['password'] == 'password'): # password à cacher par la suite
             session['authentifie'] = True
             # Rediriger vers la route lecture après une authentification réussie
             return redirect(url_for('lecture'))
+        elif (request.form['username']== 'user' and request.form['password']=='123'):
+            session['authentifie']= True
+            return redirect(url_for('fiche_client/<string:nom_client>/'))
         else:
             # Afficher un message d'erreur si les identifiants sont incorrects
             return render_template('formulaire_authentification.html', error=True)
@@ -56,14 +59,10 @@ def afficheClient(nom_client):
     cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom_client,))
     data= cursor.fetchall()
     conn.close()
-    if est_authentifie():
-        if request.form['username']== 'user' and request.form['password']== '123':
-            session['authentifie']= True
-            return render_template('read_data.html', data=data)
-        else:
-            return "<h1>Erreur d'identification</h1>"
-    else:
-        return render_template('formulaire_authentification.html', error=False)
+    if not est_authentifie():
+        return redirect(url_for('authentification'))
+    else : 
+        return render_template('read_data.html', data=data)
 
 @app.route('/consultation/')
 def ReadBDD():
