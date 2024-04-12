@@ -57,14 +57,11 @@ def afficheClient(nom_client):
     cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom_client,))
     data= cursor.fetchall()
     conn.close()
-    if est_authentifie():
+    if request.form['username']== 'user' and request.form['password']== '123':
+        session['authentifie']= True
         return render_template('read_data.html', data=data)
     else:
-        if request.form['username']== 'user' and request.form['password']== '123':
-            session['authentifie']= True
-            return render_template('read_data.html', data=data)
-        else:
-            return "<h1>Erreur</h1>"
+        return "<h1>Erreur</h1>"
 
 @app.route('/consultation/')
 def ReadBDD():
